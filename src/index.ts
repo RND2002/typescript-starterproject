@@ -5,13 +5,15 @@ import { AppDataSource } from './config/database.js'
 
 import { UserController } from './controllers/UserController.js'
 import { PostController } from './controllers/PostController.js'
+import { authenticate, authorize } from './securityConfig/AuthMiddleware.js'
 
 const app=express()
 
 app.use(bodyParser.json())
 app.post('/user',UserController.createUser)
-app.post('/post',PostController.createPost)
-app.get('/post/:postId',PostController.getPostByPostId)
+app.post('/user/authenticate',UserController.authenticateUser)
+app.post('/post',authenticate,PostController.createPost)
+app.get('/post/:postId',authenticate,authorize(["ADMIN"]),PostController.getPostByPostId)
 
 const startServer = async () => {
     try {

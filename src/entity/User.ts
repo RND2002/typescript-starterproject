@@ -12,7 +12,15 @@ export class User{
 
     @Column({unique:true})
     email:string
+    
+    @Column()
+    password:string
 
+    @Column({ default: "user" }) 
+    role: string;
+  
+    @Column("simple-array", { nullable: true }) 
+    permissions: string[];
     // @OneToMany(()=>Post,post=>post.user)
     // @JoinColumn({ name: 'user_id' })
     @OneToMany(() => Post, (post) => post.user)
